@@ -1,17 +1,21 @@
 package jdev.lojavirtual.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
 
-
+@Entity
 @SequenceGenerator(name = "seq_acesso", sequenceName = "seq_acesso",
 initialValue = 1, allocationSize = 1)
+@Table(name = "acesso")
 public class Acesso implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
@@ -22,9 +26,9 @@ public class Acesso implements GrantedAuthority {
 	
 	@Column(nullable = false)
 	private String descricao; //acesso: ROLE_ADMIN e etc
+	
 
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -52,7 +56,7 @@ public class Acesso implements GrantedAuthority {
 	@Override
 	public String getAuthority() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.descricao;
 	}
 
 

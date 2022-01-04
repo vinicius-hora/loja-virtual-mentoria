@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,10 +28,13 @@ public class Pessoa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pessoa")
 	private Long id;
 	
+	@Column(nullable = false)
 	private String nome;
 	
+	@Column(nullable = false)
 	private String email;
 	
+	@Column(nullable = false)
 	private String telefone;
 	
 	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

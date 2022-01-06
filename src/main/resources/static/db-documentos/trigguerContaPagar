@@ -1,0 +1,66 @@
+create or replace function validaChavePessoaContaPagar()
+	returns trigger
+	language PLPGSQL
+as $$
+declare existe integer;
+
+begin
+	existe = (select count(1) from pessoa_fisica where id = NEW.pessoa_id);
+		if(existe <= 0) then
+			existe = (select count(1) from pessoa_juridica where id = NEW.pessoa_id);
+			if (existe <= 0) then
+				raise exception 'Não foi encontrado o ID ou pk da pessoa para associação';
+			end if;
+		end if;
+		RETURN NEW;
+end;
+$$
+/*NEW carrega dados insert e update
+OLD carrega dados da linha antiga antes do update, no caso de atualização*/
+
+create trigger validaChavePessoaContaPagarUpdate
+before update
+on conta_pagar	
+for each row
+execute procedure validaChavePessoaContaPagar();
+	
+create trigger validaChavePessoaContaPagarInsert
+before insert
+on conta_pagar	
+for each row
+execute procedure validaChavePessoaContaPagar();
+
+FORNECEDOR
+
+create or replace function validaChavePessoaContaPagarForn()
+	returns trigger
+	language PLPGSQL
+as $$
+declare existe integer;
+
+begin
+	existe = (select count(1) from pessoa_fisica where id = NEW.pessoa_forn_id);
+		if(existe <= 0) then
+			existe = (select count(1) from pessoa_juridica where id = NEW.pessoa_forn_id);
+			if (existe <= 0) then
+				raise exception 'Não foi encontrado o ID ou pk da pessoa para associação';
+			end if;
+		end if;
+		RETURN NEW;
+end;
+$$
+/*NEW carrega dados insert e update
+OLD carrega dados da linha antiga antes do update, no caso de atualização*/
+
+create trigger validaChavePessoaContaPagarFornUpdate
+before update
+on conta_pagar	
+for each row
+execute procedure validaChavePessoaContaPagarForn();
+	
+create trigger validaChavePessoaContaPagarFornInsert
+before insert
+on conta_pagar	
+for each row
+execute procedure validaChavePessoaContaPagarForn();
+

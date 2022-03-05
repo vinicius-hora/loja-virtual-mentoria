@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.security.core.GrantedAuthority;
 
 
@@ -51,7 +53,7 @@ public class Acesso implements GrantedAuthority {
 	}
 
 
-
+	@JsonIgnore
 	@Override
 	public String getAuthority() {
 		// TODO Auto-generated method stub

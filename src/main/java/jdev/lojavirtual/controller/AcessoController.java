@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import jdev.lojavirtual.model.Acesso;
 import jdev.lojavirtual.repository.AcessoRepository;
 import jdev.lojavirtual.service.AcessoService;
 
+@CrossOrigin(origins = "*")
 @Controller
 @RestController
 public class AcessoController {
@@ -36,7 +39,8 @@ public class AcessoController {
 		
 		return new ResponseEntity<Acesso>(acessoSalvo, HttpStatus.OK);
 	}
-
+	// @CrossOrigin(origins = "http://localhost:4200")
+	// @Secured({ "ROLE_ADMIN" })
 	@ResponseBody //poder dar um retorno da API
 	@DeleteMapping(value = "/deletarAcesso")
 	public ResponseEntity<?> deletarAcesso( @RequestBody Acesso acesso) {

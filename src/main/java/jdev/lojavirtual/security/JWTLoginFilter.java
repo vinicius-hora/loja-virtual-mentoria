@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -56,4 +57,16 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter{
         }
     }
     
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+            AuthenticationException failed) throws IOException, ServletException {
+        if(failed instanceof BadCredentialsException){
+            response.getWriter().write("Usuário e senha incorretos");
+        }
+        else{
+            response.getWriter().write("Erro ao autenticar" + failed.getMessage());
+        }
+        
+    }
+
 }

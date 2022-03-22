@@ -3,7 +3,10 @@ package jdev.lojavirtual.exception;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.hibernate.exception.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,19 @@ import jdev.lojavirtual.dto.ObjetoErroDto;
 @RestControllerAdvice
 @ControllerAdvice
 public class ControleExcecoes extends ResponseEntityExceptionHandler{
+
+    private static final Logger log = LoggerFactory.getLogger(ControleExcecoes.class);
+
+    @ExceptionHandler({ExceptionMentoriaJava.class})
+    public ResponseEntity<Object> handleExceptionCustom(ExceptionMentoriaJava ex){
+        ObjetoErroDto objetoErroDto = new ObjetoErroDto();
+        objetoErroDto.setError(ex.getMessage());
+        objetoErroDto.setCode(HttpStatus.OK.toString());
+
+        return ResponseEntity.status(HttpStatus.OK).body(objetoErroDto);
+
+    }
+	
 
     //captura exceções do projeto
     @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
@@ -43,12 +59,12 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler{
         objetoErroDto.setError(msg);
         objetoErroDto.setCode(status.value() + "==> " + status.getReasonPhrase());
         
-        return new ResponseEntity<Object>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //captura erros do banco
     @ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class, SQLException.class})
-    protected ResponseEntity<Object> HandleExceptionIntegry(Exception ex){
+    protected ResponseEntity<Object> handleExceptionIntegry(Exception ex){
         ObjetoErroDto objetoErroDto = new ObjetoErroDto();
         
         String msg = "";
@@ -69,8 +85,10 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler{
         }
         objetoErroDto.setError(msg);
         objetoErroDto.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+
+        log.error("Erro interno: {} ", ex.getMessage());
         
-        return new ResponseEntity<Object>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jdev.lojavirtual.exception.ExceptionMentoriaJava;
 import jdev.lojavirtual.model.Acesso;
 import jdev.lojavirtual.repository.AcessoRepository;
 import jdev.lojavirtual.service.AcessoService;
@@ -33,8 +34,17 @@ public class AcessoController {
 	
 	@ResponseBody //poder dar um retorno da API
 	@PostMapping(value = "/salvarAcesso")
-	public ResponseEntity<Acesso> salvarAcesso( @RequestBody Acesso acesso) {
+	public ResponseEntity<Acesso> salvarAcesso( @RequestBody Acesso acesso) throws ExceptionMentoriaJava {
+		//verifica se já existe
+		if(acesso.getId()== null){
+			List<Acesso> acessos = acessoRepository.buscarAcessoDesc(acesso.getDescricao().toUpperCase());
+			if(!acessos.isEmpty()) {
+				throw new ExceptionMentoriaJava("Acesso já cadastrado com a descricao: " + acesso.getDescricao());
+			}
+		}
+		
 		//recebe json e converte pra objeto
+
 		Acesso acessoSalvo = acessoService.save(acesso);
 		
 		return new ResponseEntity<Acesso>(acessoSalvo, HttpStatus.OK);
@@ -60,9 +70,12 @@ public class AcessoController {
 
 	@ResponseBody //poder dar um retorno da API
 	@GetMapping(value = "/obterAcesso/{id}")
-	public ResponseEntity<Acesso> obterAcesso( @PathVariable("id") Long id) {
+	public ResponseEntity<Acesso> obterAcesso( @PathVariable("id") Long id) throws ExceptionMentoriaJava {
 		//recebe json e converte pra objeto
-		Acesso acesso = acessoRepository.findById(id).get();
+		Acesso acesso = acessoRepository.findById(id).orElse(null);
+		if(acesso == null) {
+			throw new ExceptionMentoriaJava("Acesso não encontrado com o id: " + id);
+		}
 		
 		return ResponseEntity.ok(acesso);
 	}
@@ -71,7 +84,7 @@ public class AcessoController {
 	@GetMapping(value = "/obterAcessoPorDesc/{desc}")
 	public ResponseEntity<List<Acesso>> obterAcessoPorDesc( @PathVariable("desc") String desc) {
 		//recebe json e converte pra objeto
-		List<Acesso> acesso = acessoRepository.buscarAcessoDesc(desc);
+		List<Acesso> acesso = acessoRepository.buscarAcessoDesc(desc.toUpperCase());
 		
 		return ResponseEntity.ok(acesso);
 	}

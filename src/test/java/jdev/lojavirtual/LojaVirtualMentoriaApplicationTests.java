@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import jdev.lojavirtual.controller.AcessoController;
+import jdev.lojavirtual.exception.ExceptionMentoriaJava;
 import jdev.lojavirtual.model.Acesso;
 import jdev.lojavirtual.repository.AcessoRepository;
 import jdev.lojavirtual.service.AcessoService;
@@ -196,7 +197,7 @@ class LojaVirtualMentoriaApplicationTests extends TestCase {
 //	}
 	
 	@Test
-	public void testCadastraAcessoController() {
+	public void testCadastraAcessoController() throws ExceptionMentoriaJava {
 		Acesso acesso = new Acesso();
 		acesso.setDescricao("ROLE_ADMIN");
 		acesso = acessoController.salvarAcesso(acesso).getBody();

@@ -1,0 +1,81 @@
+alter table avaliacao_produto add constraint avaliacao_produto0empresa_fk FOREIGN key (avaliacao_produto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table categoria_produto add constraint categoria_produto0empresa_fk FOREIGN key (categoria_produto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table conta_pagar add constraint conta_pagar0empresa_fk FOREIGN key (conta_pagar0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table conta_receber add constraint conta_receber0empresa_fk FOREIGN key (conta_receber0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table cup_desc add constraint cupom_desconto0empresa_fk FOREIGN key (cupom_desconto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table endereco add constraint endereco0empresa_fk FOREIGN key (endereco0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table forma_pagamento add constraint forma_pagamento0empresa_fk FOREIGN key (forma_pagamento0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table imagem_produto add constraint imagem_produto0empresa_fk FOREIGN key (imagem_produto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+
+alter table item_venda_loja add constraint item_venda_loja0empresa_fk FOREIGN key (item_venda_loja0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table marca_produto add constraint marca_produto0empresa_fk FOREIGN key (marca_produto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table nota_fiscal_compra add constraint nota_fiscal_compra0empresa_fk FOREIGN key (nota_fiscal_compra0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table nota_fiscal_venda add constraint nota_fiscal_venda0empresa_fk FOREIGN key (nota_fiscal_venda0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table nota_item_produto add constraint nota_item_produto0empresa_fk FOREIGN key (nota_item_produto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table pessoa_fisica add constraint pessoa0empresa_fk FOREIGN key (pessoa0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table pessoa_juridica add constraint pessoa0empresa_fk FOREIGN key (pessoa0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table produto add constraint produto0empresa_fk FOREIGN key (produto0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+
+alter table status_rastreio add constraint status_rastreio0empresa_fk FOREIGN key (status_rastreio0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table usuario add constraint usuario0empresa_fk FOREIGN key (usuario0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+alter table vd_cp_loja_virt add constraint venda_compra_loja0empresa_fk FOREIGN key (venda_compra_loja0empresa_id)
+REFERENCES pessoa_juridica(id)
+
+
+alter table usuario add constraint login_unique unique (login)
+
+alter TABLE public.pessoa_juridica add column pessoa0empresa_id bigint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 package jdev.lojavirtual;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ class LojaVirtualMentoriaApplicationTests extends TestCase {
 		MockMvc mockMvc = builder.build();
 
 		Acesso acesso = new Acesso();
-		acesso.setDescricao("ROLE_TESTE");
+		acesso.setDescricao("ROLE_TESTE" + Calendar.getInstance().getTimeInMillis());
 		//criar json
 		ObjectMapper mapper = new ObjectMapper();
 		ResultActions retornoApi = mockMvc.perform(MockMvcRequestBuilders.post("/salvarAcesso")
@@ -199,10 +200,11 @@ class LojaVirtualMentoriaApplicationTests extends TestCase {
 	@Test
 	public void testCadastraAcessoController() throws ExceptionMentoriaJava {
 		Acesso acesso = new Acesso();
-		acesso.setDescricao("ROLE_ADMIN");
+		String descricao = "ROLE_ADMIN" + Calendar.getInstance().getTimeInMillis();
+		acesso.setDescricao(descricao);
 		acesso = acessoController.salvarAcesso(acesso).getBody();
 		assertEquals(true, acesso.getId() > 0);
-		assertEquals("ROLE_ADMIN", acesso.getDescricao());
+		assertEquals(descricao, acesso.getDescricao());
 
 		//TESTE DE CARREGAMENTO
 		Acesso acesso2 = acessoRepository.findById(acesso.getId()).get();

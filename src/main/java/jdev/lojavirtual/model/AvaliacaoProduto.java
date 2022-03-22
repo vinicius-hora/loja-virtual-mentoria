@@ -35,7 +35,22 @@ public class AvaliacaoProduto implements Serializable {
 	@JoinColumn(name = "avaliacao_produto0pessoa_id", nullable = false, foreignKey = 
 	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "avaliacao_produto0pessoa_fk"))
 	private Pessoa pessoa;
+
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "avaliacao_produto0empresa_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "avaliacao_produto0empresa_fk"))
+	private Pessoa empresa;
 	
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
+	}
+
 
 	@ManyToOne
 	@JoinColumn(name = "avaliacao_produto0produto_id", nullable = false, foreignKey = 

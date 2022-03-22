@@ -39,6 +39,27 @@ public class StatusRastreio implements Serializable {
 	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "status_rastreio0venda_compra_loja_virt_fk"))
 	private VendaCompraLojaVirtual vendaCompraLojaVirtual;
 
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "statusRastreio0empresa_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "statusRastreio0empresa_fk"))
+	private Pessoa empresa;
+
+	public VendaCompraLojaVirtual getVendaCompraLojaVirtual() {
+		return vendaCompraLojaVirtual;
+	}
+
+	public void setVendaCompraLojaVirtual(VendaCompraLojaVirtual vendaCompraLojaVirtual) {
+		this.vendaCompraLojaVirtual = vendaCompraLojaVirtual;
+	}
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
+	}
+
 	public Long getId() {
 		return id;
 	}

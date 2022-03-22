@@ -51,7 +51,22 @@ public class ContaReceber implements Serializable {
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
 	
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
+	}
+
+
+
 	private BigDecimal valorDesconto;
+
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "contaReceber0empresa_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "contaReceber0empresa_fk"))
+	private Pessoa empresa;
 
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = 

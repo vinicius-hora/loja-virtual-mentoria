@@ -59,6 +59,21 @@ public class Endereco implements Serializable {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TipoEndereco tipoEndereco;
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
+	}
+
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "endereco0empresa_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "endereco0empresa_fk"))
+	private Pessoa empresa;
+
+	
 	
 	
 

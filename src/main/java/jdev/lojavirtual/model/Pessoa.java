@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.*;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -43,8 +44,21 @@ public class Pessoa implements Serializable {
 	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Endereco> enderecos = new ArrayList<Endereco>();
 
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "pessoa0empresa_id", nullable = true, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa0empresa_fk"))
+	private Pessoa empresa;
+
 	public Long getId() {
 		return id;
+	}
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
 	}
 
 	public void setId(Long id) {

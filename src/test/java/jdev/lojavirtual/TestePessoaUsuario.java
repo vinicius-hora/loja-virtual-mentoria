@@ -1,9 +1,13 @@
 package jdev.lojavirtual;
 
+import java.util.Calendar;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import jdev.lojavirtual.controller.PessoaController;
+import jdev.lojavirtual.exception.ExceptionMentoriaJava;
 import jdev.lojavirtual.model.PessoaFisica;
 import jdev.lojavirtual.model.PessoaJuridica;
 import jdev.lojavirtual.repository.PessoaRepository;
@@ -19,13 +23,16 @@ public class TestePessoaUsuario extends TestCase{
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @Autowired
+    private PessoaController pessoaController;
+
     @Test
-    public void testCadPessoaFisica(){
+    public void testCadPessoaFisica() throws ExceptionMentoriaJava{
 
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
         pessoaJuridica.setNome("José");
-        pessoaJuridica.setCnpj("12345678951");
-        pessoaJuridica.setEmail("teste@teste.com");
+        pessoaJuridica.setCnpj("" + Calendar.getInstance().getTimeInMillis());
+        pessoaJuridica.setEmail("teste@pj.com");
         pessoaJuridica.setTelefone("12345678");
         pessoaJuridica.setInscEstadual("inscEstadual");
         pessoaJuridica.setInscMunicipal("inscMunicipal");
@@ -33,7 +40,7 @@ public class TestePessoaUsuario extends TestCase{
         pessoaJuridica.setCategoria("categoria");
         pessoaJuridica.setNomeFantasia("nomeFantasia");
 
-        pessoaRepository.save(pessoaJuridica);
+        pessoaController.salvarPJ(pessoaJuridica);
 
         // PessoaFisica pessoaFisica = new PessoaFisica();
         // pessoaFisica.setNome("José");

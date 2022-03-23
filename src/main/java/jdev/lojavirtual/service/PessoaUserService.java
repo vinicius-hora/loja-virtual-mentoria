@@ -1,6 +1,9 @@
 package jdev.lojavirtual.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +27,17 @@ public class PessoaUserService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ServiceSendEmail serviceSendEmail;
+
     public PessoaJuridica salvarPJ(PessoaJuridica pessoaJuridica) {
+        //pessoaJuridica = pessoaRepository.save(pessoaJuridica);
+
+        for(int i = 0; i < pessoaJuridica.getEnderecos().size(); i++) {
+            pessoaJuridica.getEnderecos().get(i).setPessoa(pessoaJuridica);
+            pessoaJuridica.getEnderecos().get(i).setEmpresa(pessoaJuridica);
+
+        }
         pessoaJuridica = pessoaRepository.save(pessoaJuridica);
 
         Usuario usuarioPJ = usuarioRepository.findUserByPessoa(pessoaJuridica.getId(), pessoaJuridica.getEmail());
@@ -47,7 +60,21 @@ public class PessoaUserService {
             String senhaCriptografada = new BCryptPasswordEncoder().encode(senha);
             usuarioPJ.setSenha(senhaCriptografada);
             usuarioPJ = usuarioRepository.save(usuarioPJ);
-            // usuarioRepository.insereAcessoPj(usuarioPJ.getId());
+            usuarioRepository.insereAcessoPj(usuarioPJ.getId());
+
+            StringBuilder mensagemHtml = new StringBuilder();
+            mensagemHtml.append("<h1>Olá " + pessoaJuridica.getNome() + "</h1>");
+            mensagemHtml.append("<b> Seu cadastro foi realizado com sucesso! </b>");
+            mensagemHtml.append("<b> Login </b>" +pessoaJuridica.getEmail() + "<br>");
+            mensagemHtml.append("<b> Senha </b>" + senha + "<br>");
+            mensagemHtml.append("<b> Acesse o sistema <a href='http://localhost:8080/lojavirtual'> aqui </a> </b>");
+
+            try {
+                serviceSendEmail.enviarEmailHtml(pessoaJuridica.getEmail(), "Acesso gerado - mentoria jdev", mensagemHtml.toString());
+            } catch (Exception e) {
+                
+                e.printStackTrace();
+            }
         }
 
         return pessoaJuridica;

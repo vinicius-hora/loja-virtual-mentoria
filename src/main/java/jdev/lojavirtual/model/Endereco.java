@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jdev.lojavirtual.enuns.TipoEndereco;
 
 @Entity
@@ -50,7 +52,7 @@ public class Endereco implements Serializable {
 	@Column(nullable = false)
 	private String cidade;
 	
-	
+	@JsonIgnore
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(
 			value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
@@ -68,6 +70,7 @@ public class Endereco implements Serializable {
 		this.empresa = empresa;
 	}
 
+	@JsonIgnore
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "endereco0empresa_id", nullable = false, foreignKey = 
 	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "endereco0empresa_fk"))

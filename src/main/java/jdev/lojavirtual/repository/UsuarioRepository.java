@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import jdev.lojavirtual.model.Usuario;
 
+import java.util.List;
+
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
@@ -25,6 +27,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Transactional
     @Query(nativeQuery = true, value = "insert into usuarios_acesso (usuario_id, acesso_id) values (?1, (select id from acesso where descricao = 'ROLE_USER'))")
     void insereAcessoPj(Long id);
+
+    @Query("select u from Usuario u where u.dataAtualSenha <= current_date - 90")
+    List<Usuario> usuarioSenhaVencida();
 
 }
     

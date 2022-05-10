@@ -18,6 +18,8 @@ import jdev.lojavirtual.model.PessoaJuridica;
 import jdev.lojavirtual.repository.PessoaRepository;
 import jdev.lojavirtual.service.PessoaUserService;
 
+import javax.validation.Valid;
+
 @RestController
 
 public class PessoaController {
@@ -34,7 +36,7 @@ public class PessoaController {
 
     @ResponseBody
     @PostMapping("/salvarPj")
-    public ResponseEntity<PessoaJuridica>salvarPJ(@RequestBody PessoaJuridica pessoaJuridica) throws ExceptionMentoriaJava {
+    public ResponseEntity<PessoaJuridica>salvarPJ(@RequestBody @Valid PessoaJuridica pessoaJuridica) throws ExceptionMentoriaJava {
 
         if(pessoaJuridica == null) {
             throw new ExceptionMentoriaJava("Pessoa Juridica não pode ser nulo");
@@ -57,7 +59,7 @@ public class PessoaController {
 
     @ResponseBody
     @PostMapping("/salvarPf")
-    public ResponseEntity<PessoaFisica>salvarPf(@RequestBody PessoaFisica pessoaFisica) throws ExceptionMentoriaJava {
+    public ResponseEntity<PessoaFisica>salvarPf(@RequestBody @Valid PessoaFisica pessoaFisica) throws ExceptionMentoriaJava {
 
         if(pessoaFisica == null) {
             throw new ExceptionMentoriaJava("Pessoa Fisica não pode ser nulo");

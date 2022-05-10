@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import javax.mail.MessagingException;
 
+import jdev.lojavirtual.dto.CepDTO;
 import jdev.lojavirtual.model.PessoaFisica;
 import jdev.lojavirtual.repository.PessoaFisicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import jdev.lojavirtual.model.PessoaJuridica;
 import jdev.lojavirtual.model.Usuario;
 import jdev.lojavirtual.repository.PessoaRepository;
 import jdev.lojavirtual.repository.UsuarioRepository;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class PessoaUserService {
@@ -134,4 +136,9 @@ public class PessoaUserService {
 
         return pessoaFisica;
     }
+    public CepDTO consultaCep (String cep) {
+
+        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", CepDTO.class).getBody();
+    }
+
 }

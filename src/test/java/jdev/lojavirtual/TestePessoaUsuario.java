@@ -28,17 +28,20 @@ public class TestePessoaUsuario extends TestCase{
     @Autowired
     private PessoaController pessoaController;
 
+
+
+
     @Test
-    public void testCadPessoaFisica() throws ExceptionMentoriaJava{
+    public void testCadPessoaJuridica() throws ExceptionMentoriaJava{
 
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
         pessoaJuridica.setNome("José3");
-        pessoaJuridica.setCnpj("" + Calendar.getInstance().getTimeInMillis());
+        pessoaJuridica.setCnpj("02.233.507/0001-10");
         pessoaJuridica.setEmail("teste1234@pj.com");
         pessoaJuridica.setTelefone("12345678");
-        pessoaJuridica.setInscEstadual("inscEstadual");
-        pessoaJuridica.setInscMunicipal("inscMunicipal");
-        pessoaJuridica.setRazaoSocial("razaoSocial");
+        pessoaJuridica.setInscEstadual("inscEstadualteste");
+        pessoaJuridica.setInscMunicipal("inscMunicipalteste");
+        pessoaJuridica.setRazaoSocial("razaoSocialteste");
         pessoaJuridica.setCategoria("categoria");
         pessoaJuridica.setNomeFantasia("nomeFantasia");
 
@@ -72,6 +75,53 @@ public class TestePessoaUsuario extends TestCase{
         assertEquals(true, pessoaJuridica.getId() != null);
 
         
+
+    }
+
+    @Test
+    public void testCadPessoaFisica() throws ExceptionMentoriaJava{
+
+        PessoaJuridica pessoaJuridica = pessoaRepository.existeCNPJCadastrados("1648037837642");
+
+        PessoaFisica pessoaFisica = new PessoaFisica();
+        pessoaFisica.setNome("José3");
+        pessoaFisica.setCpf("496.023.650-72");
+        pessoaFisica.setEmail("teste1234@pj.com");
+        pessoaFisica.setTelefone("12345678");
+        pessoaFisica.setEmpresa(pessoaJuridica);
+
+        Endereco endereco = new Endereco();
+        endereco.setCep("12345678");
+        endereco.setCidade("cidade");
+        endereco.setComplemento("complemento");
+        endereco.setBairro("bairro");
+        endereco.setRuaLogradouro("logradouro");
+        endereco.setNumero("123");
+        endereco.setTipoEndereco(TipoEndereco.COBRANCA);
+        endereco.setPessoa(pessoaFisica);
+        endereco.setUf("uf");
+        endereco.setEmpresa(pessoaJuridica);
+
+        Endereco endereco2 = new Endereco();
+        endereco2.setCep("12345678");
+        endereco2.setCidade("cidade");
+        endereco2.setComplemento("complemento");
+        endereco2.setBairro("bairro");
+        endereco2.setRuaLogradouro("logradouro");
+        endereco2.setNumero("123");
+        endereco2.setTipoEndereco(TipoEndereco.ENTREGA);
+        endereco2.setPessoa(pessoaFisica);
+        endereco2.setUf("uf");
+        endereco2.setEmpresa(pessoaJuridica);
+
+        pessoaFisica.getEnderecos().add(endereco);
+        pessoaFisica.getEnderecos().add(endereco2);
+
+        pessoaFisica= pessoaController.salvarPf(pessoaFisica).getBody();
+
+        assertEquals(true, pessoaFisica.getId() != null);
+
+
 
     }
 

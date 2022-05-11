@@ -1,12 +1,16 @@
 package jdev.lojavirtual.exception;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.List;
 
+import jdev.lojavirtual.service.ServiceSendEmail;
 import org.apache.catalina.connector.Response;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,9 +26,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import jdev.lojavirtual.dto.ObjetoErroDto;
 
+import javax.mail.MessagingException;
+
 @RestControllerAdvice
 @ControllerAdvice
 public class ControleExcecoes extends ResponseEntityExceptionHandler{
+
+    @Autowired
+    private ServiceSendEmail serviceSendEmail;
 
     private static final Logger log = LoggerFactory.getLogger(ControleExcecoes.class);
 
@@ -62,6 +71,11 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler{
         }
         objetoErroDto.setError(msg);
         objetoErroDto.setCode(status.value() + "==> " + status.getReasonPhrase());
+        try {
+            serviceSendEmail.enviarEmailHtml("vinicius_hora@live.com", "erro na loja virtual", ExceptionUtils.getStackTrace(ex));
+        }catch (UnsupportedEncodingException | MessagingException e) {
+            log.error("Erro ao enviar email: {} ", e.getMessage());
+        }
         
         return new ResponseEntity<>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -89,8 +103,15 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler{
         }
         objetoErroDto.setError(msg);
         objetoErroDto.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-
         log.error("Erro interno: {} ", ex.getMessage());
+        try {
+            serviceSendEmail.enviarEmailHtml("vinicius_hora@live.com", "erro na loja virtual", ExceptionUtils.getStackTrace(ex));
+        }catch (UnsupportedEncodingException | MessagingException e) {
+            log.error("Erro ao enviar email: {} ", e.getMessage());
+        }
+
+
+
         
         return new ResponseEntity<>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }

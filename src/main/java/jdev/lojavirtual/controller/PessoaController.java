@@ -19,6 +19,7 @@ import jdev.lojavirtual.repository.PessoaRepository;
 import jdev.lojavirtual.service.PessoaUserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 
@@ -115,6 +116,37 @@ public class PessoaController {
       return ResponseEntity.ok(cepDTO);
     }
 
+    @ResponseBody
+    @GetMapping(value = "/consultaPfNome/{nome}")
+    public ResponseEntity<List<PessoaFisica>> pesquisaPorNomePessoaFisica(@PathVariable("nome") String nome) throws ExceptionMentoriaJava {
+        List<PessoaFisica> pessoasFisicas = pessoaFisicaRepository.pesquisaPorNomePessoaFisica(nome.trim().toUpperCase());
+
+        return ResponseEntity.ok(pessoasFisicas);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/consultaPfCpf/{cpf}")
+    public ResponseEntity<List<PessoaFisica>> pesquisaPorCpfPessoaFisica(@PathVariable("cpf") String cpf) throws ExceptionMentoriaJava {
+        List<PessoaFisica> pessoasFisicas = pessoaFisicaRepository.pesquisaPorCpfPessoaFisica(cpf);
+
+        return ResponseEntity.ok(pessoasFisicas);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/consultaPjNome/{nome}")
+    public ResponseEntity<List<PessoaJuridica>> pesquisaPorNomePessoaJuridica(@PathVariable("nome") String nome)  {
+        List<PessoaJuridica> pessoasJuridicas = pessoaRepository.pesquisaPorNomePessoaJuridica(nome.trim().toUpperCase());
+
+        return ResponseEntity.ok(pessoasJuridicas);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/consultaPjCnpj/{cnpj}")
+    public ResponseEntity<List<PessoaJuridica>> pesquisaPorCnpjPessoaJuridica(@PathVariable("cnpj") String cnpj) {
+        List<PessoaJuridica> pessoasJuridicas = pessoaRepository.pesquisaPorCnpjPessoaJuridica(cnpj);
+
+        return ResponseEntity.ok(pessoasJuridicas);
+    }
     
     
 }

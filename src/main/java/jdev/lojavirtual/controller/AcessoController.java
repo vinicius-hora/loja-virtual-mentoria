@@ -39,7 +39,7 @@ public class AcessoController {
 		if(acesso.getId()== null){
 			List<Acesso> acessos = acessoRepository.buscarAcessoDesc(acesso.getDescricao().toUpperCase());
 			if(!acessos.isEmpty()) {
-				throw new ExceptionMentoriaJava("Acesso ja cadastrado com a descricao: " + acesso.getDescricao());
+				throw new ExceptionMentoriaJava("Acesso ja cadastrado com a descricao : " + acesso.getDescricao());
 			}
 		}
 		
